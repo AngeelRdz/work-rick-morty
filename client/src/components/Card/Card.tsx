@@ -23,7 +23,10 @@ const Card: React.FC<CardProps> = ({ results }) => {
 	const locationPath = useLocation();
 	const { createFavorite, deleteFavorite } = useFavorite();
 	const addToFavorites = async (id: number, image: string, name: string, status: string, location: { name: string }) => {
-        await createFavorite({ id, image, name, status, location: location?.name ?? 'Unknown' });
+        await createFavorite({
+			id, image, name, status, location: location?.name ?? 'Unknown',
+			_id: 0
+		});
 		console.log("Mandar a favoritos:", { id, image, name, status, location });
     };
 
