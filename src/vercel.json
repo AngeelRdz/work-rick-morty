@@ -1,15 +1,5 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "/s",
-            "use": "/"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/"
-        }
+    "rewrites": [
+        { "source": "/(.*)", "destination": "/" }
     ]
 }
