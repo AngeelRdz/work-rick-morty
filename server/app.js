@@ -9,7 +9,7 @@ import favoriteRoutes from './routes/favorites.routes.js';
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.CLIENT_URL || 'http://localhost:5173',
     credentials: true,
 }));
 app.use(morgan('dev'));
@@ -18,5 +18,9 @@ app.use(cookieParser());
 
 app.use(authRoutes);
 app.use(favoriteRoutes);
+
+app.get('/', (req, res) => {
+    res.send('Server is running!');
+});
 
 export default app;
