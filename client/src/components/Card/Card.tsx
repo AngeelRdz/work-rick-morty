@@ -8,7 +8,7 @@ import styles from "./card.module.scss";
 interface CardProps {
     page: string;
     results: Array<{
-        id: string;
+        _id: string;
         image: string;
         name: string;
         status: string;
@@ -18,10 +18,10 @@ interface CardProps {
     }> | null;
 }
 
-const Card: React.FC<CardProps> = ({ page, results }) => {
+const Card: React.FC<CardProps> = ({ results }) => {
 	console.log("results:", results);
 	const locationPath = useLocation();
-	const { createFavorite, deleteFavorite, user } = useFavorite();
+	const { createFavorite, deleteFavorite } = useFavorite();
 	const addToFavorites = async (id: number, image: string, name: string, status: string, location: { name: string }) => {
         await createFavorite({ id, image, name, status, location: location?.name ?? 'Unknown' });
 		console.log("Mandar a favoritos:", { id, image, name, status, location });
@@ -45,6 +45,7 @@ const Card: React.FC<CardProps> = ({ page, results }) => {
 						// to={`${page}${_id}`}
 						key={index}
 						className="col-lg-3 col-md-6 col-sm-6 col-12 mb-4 position-relative text-dark"
+						to={""}
 					>
 						<div
 							className={`${styles.card} d-flex flex-column justify-content-center`}
@@ -95,7 +96,7 @@ const Card: React.FC<CardProps> = ({ page, results }) => {
                                 className="badge bg-danger fs-5"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    deleteToFavorites(_id);
+                                    deleteToFavorites(parseInt(_id));
                                 }}
                             >
                                 Quitar de Favorito
@@ -105,7 +106,7 @@ const Card: React.FC<CardProps> = ({ page, results }) => {
                                 className="badge bg-success fs-5"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    addToFavorites(_id, image, name, status, location);
+                                    addToFavorites(parseInt(_id), image, name, status, location || { name: 'Unknown' });
                                 }}
                             >
                                 Agregar a Favorito

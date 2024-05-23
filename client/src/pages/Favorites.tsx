@@ -21,7 +21,7 @@ const Favorites: React.FC = () => {
                     <div className="col-lg-12 col-12">
                         <div className="row">
                             {list.length > 0 ? (
-                                    <Card page="/" results={list} />
+                                    <Card page="/" results={list as unknown as Array<{ _id: string; image: string; name: string; status: string; location?: { name: string; }; }>} />
                                 ) : (
                                     <p>No hay favoritos.</p>
                                 )

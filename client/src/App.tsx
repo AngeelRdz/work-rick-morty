@@ -49,7 +49,7 @@ function App() {
             <FavoriteProvider>
                 <Router>
                     <div className="App">
-                        <Navbar />
+                        <Navbar to={""} />
                     </div>
                     <Routes>
                         <Route path="/" element={<Home />} />
@@ -139,7 +139,21 @@ const Home: React.FC = () => {
                 <div className="row">
                     <div className="col-lg-12 col-12">
                         <div className="row">
-                            <Card page="/" results={fetchedData} />
+                            {fetchedData.map((character) => (
+                                <Card
+                                    key={character.id}
+                                    page="/"
+                                    results={[
+                                        {
+                                            _id: character.id.toString(),
+                                            image: character.image,
+                                            name: character.name,
+                                            status: character.status,
+                                            location: character.location,
+                                        },
+                                    ]}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>

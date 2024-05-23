@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { createContext, ReactNode, useState, useContext } from "react";
 import { AxiosError } from 'axios';
 import { createFavoritesRequest, getFavoritesRequest, deleteFavoritesRequest } from '../api/favorite.js';
 
 interface User {
-    id: number;
+    _id: number;
     name: string;
     image: string;
     status: string;

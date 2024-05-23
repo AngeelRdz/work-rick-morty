@@ -2,9 +2,15 @@ import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
+import { NavLinkProps } from "react-router-dom";
+
 import "../../App.scss";
 
-const Navbar: React.FC = () => {
+interface CustomNavLinkProps extends NavLinkProps {
+    activeClassName?: string;
+}
+
+const Navbar: React.FC<CustomNavLinkProps> = () => {
     const { isAuthenticated, logout } = useAuth();
 
     return (
@@ -13,18 +19,6 @@ const Navbar: React.FC = () => {
                 <Link to="/" className="navbar-brand fs-3 ubuntu">
                     Rick & Morty <span className="text-primary">WiKi</span>
                 </Link>
-
-                <style jsx>
-                    {`
-                        button[aria-expanded="false"] > .close {
-                            display: none;
-                        }
-
-                        button[aria-expanded="true"] > .open {
-                            display: none;
-                        }
-                    `}
-                </style>
 
                 <button
                     className="navbar-toggler border-0"
@@ -52,14 +46,12 @@ const Navbar: React.FC = () => {
                             Characters
                         </NavLink>
                         <NavLink
-                            activeClassName="active"
                             className="nav-link"
                             to="/favorites"
                         >
                             Favorites
                         </NavLink>
                         <NavLink
-                            activeClassName="active"
                             className="nav-link"
                             to="/location"
                         >
@@ -68,7 +60,6 @@ const Navbar: React.FC = () => {
                         {
                             !isAuthenticated && (
                                 <NavLink
-                                    activeClassName="active"
                                     className="nav-link"
                                     to="/register"
                                 >
@@ -79,7 +70,6 @@ const Navbar: React.FC = () => {
                         {
                             !isAuthenticated ? (
                                 <NavLink
-                                    activeClassName="active"
                                     className="nav-link"
                                     to="/login"
                                 >
@@ -87,7 +77,6 @@ const Navbar: React.FC = () => {
                                 </NavLink>
                             ) : (
                                 <NavLink
-                                    activeClassName="active"
                                     className="nav-link"
                                     to="/"
                                     onClick={logout}
