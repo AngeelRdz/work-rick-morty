@@ -4,6 +4,7 @@ import { AxiosError } from 'axios';
 import { createFavoritesRequest, getFavoritesRequest, deleteFavoritesRequest } from '../api/favorite.js';
 
 interface User {
+    _id: number;
     id: number;
     name: string;
     image: string;
