@@ -10,7 +10,7 @@
         { "handle": "filesystem" },
         {
             "src": "/.*",
-            "dest": "/src/index.js"
+            "dest": "/client/index.html"
         }
     ]
 }
