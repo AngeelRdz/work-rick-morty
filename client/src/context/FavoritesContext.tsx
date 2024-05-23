@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { createContext, ReactNode, useState, useContext } from "react";
+import React, { createContext, ReactNode, useState, useContext, useEffect } from "react";
 import { AxiosError } from 'axios';
 import { createFavoritesRequest, getFavoritesRequest, deleteFavoritesRequest } from '../api/favorite.js';
 
@@ -100,12 +99,24 @@ export const FavoriteProvider: React.FC<FavoriteProviderProps> = ({ children }) 
         }
     };
 
+    useEffect(() => {
+        if (errors && errors.length > 0) {
+            const timer = setTimeout(() => {
+                setErrors(null);
+            }, 3000);
+
+            return () => {
+                clearTimeout(timer);
+            };
+        }
+    }, [errors]);
+
     return (
         <FavoriteContext.Provider value={{
             getFavorites,
             isAuthenticated: false,
             errors: null,
-            loading: true,
+            loading,
             list,
             createFavorite,
             deleteFavorite,
