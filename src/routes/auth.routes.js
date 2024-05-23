@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import { register, login, logout, favorites } from '../controllers/auth.controller.js';
-import { authRequired } from '../middlewares/validateToken.js';
+import { register, login, logout, verifyToken } from '../controllers/auth.controller.js';
 import { validateSchema } from '../middlewares/validator.middleware.js';
 import { registerSchema, loginSchema } from '../schemas/auth.schema.js';
 
@@ -10,6 +9,6 @@ router.post('/api/register', validateSchema(registerSchema), register);
 router.post('/api/login', validateSchema(loginSchema), login);
 router.post('/api/logout', logout);
 
-router.get('/api/favorites', authRequired, favorites);
+router.get('/api/verify', verifyToken);
 
 export default router;

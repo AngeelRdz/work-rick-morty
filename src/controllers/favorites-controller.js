@@ -10,13 +10,14 @@ export const getFavorites = async (req, res) => {
 };
 
 export const createFavorite = async (req, res) => {
-    const { name, imagen, status, date } = req.body;
+    const { name, imagen, status, location, date } = req.body;
 
     try {
         const newFavorite = new Favorite({
             name,
             imagen,
             status,
+            location,
             date,
             user: req.user.id,
         });
