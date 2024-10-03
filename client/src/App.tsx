@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { FavoriteProvider } from "./context/FavoritesContext";
+import { getFavoritesRequest } from './api/favorite.js';
 
 import Search from "./components/Search/Search";
 import Navbar from "./components/Navbar/Navbar";
@@ -74,7 +75,9 @@ const Home: React.FC = () => {
     const [search, setSearch] = useState("");
     const [info, setInfo] = useState<Info | null>(null);
     const [loading, setLoading] = useState(false);
+    // const { list, getFavorites } = useFavorite();
     const loader = useRef<HTMLDivElement>(null);
+    const [favorites, setFavorites] = useState([]);
 
     const api = `https://rickandmortyapi.com/api/character/?page=${pageNumber}&name=${search}`;
 
@@ -103,9 +106,25 @@ const Home: React.FC = () => {
         }
     }, [api, pageNumber]);
 
+    const fetchFavorites = useCallback(async () => {
+        setLoading(true);
+        try {
+            const response = await getFavoritesRequest();
+            console.log('response de mis favoritos:', response.data);
+            const favoritesItems = response.data.map((x) => x._id);
+            setFavorites(favoritesItems);
+            console.log('lista de favoritos a mandar:', favoritesItems);
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     useEffect(() => {
         fetchCharacters();
-    }, [fetchCharacters]);
+        fetchFavorites();
+    }, [fetchCharacters, fetchFavorites]);
 
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -131,6 +150,8 @@ const Home: React.FC = () => {
         updateFetchedData([]);
     };
 
+    console.log('lista de ID´S favoritos a mandar:', favorites);
+
     return (
         <div className="App">
             <h1 className="text-center mb-3">Personajes</h1>
@@ -152,6 +173,7 @@ const Home: React.FC = () => {
                                             location: character.location,
                                         },
                                     ]}
+                                    // isFavorite={favorites}
                                 />
                             ))}
                         </div>

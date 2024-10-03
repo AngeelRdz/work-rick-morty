@@ -16,23 +16,27 @@ interface CardProps {
             name: string;
         };
     }> | null;
+	isFavorite?: string[];
 }
 
-const Card: React.FC<CardProps> = ({ results }) => {
-	console.log("results:", results);
+const Card: React.FC<CardProps> = ({ results, isFavorite }) => {
+	// console.log("results:", results);
 	const locationPath = useLocation();
 	const { createFavorite, deleteFavorite } = useFavorite();
+
 	const addToFavorites = async (id: number, image: string, name: string, status: string, location: { name: string }) => {
         await createFavorite({
 			id, image, name, status, location: location?.name ?? 'Unknown',
 			_id: 0
 		});
 		console.log("Mandar a favoritos:", { id, image, name, status, location });
+		// updateFavorites();
     };
 
-	const deleteToFavorites = async (id: number) => {
-		await deleteFavorite(id);
-		console.log("Borrar de favoritos:", id);
+	const deleteToFavorites = async (_id: string) => {
+		await deleteFavorite(_id);
+		console.log("Borrar de favoritos:", _id);
+		// updateFavorites();
 	}
 
 	let display;
@@ -40,6 +44,7 @@ const Card: React.FC<CardProps> = ({ results }) => {
 	if (results) {
         display = results.map((x, index) => {
 			const { _id, image, name, status, location } = x;
+			const isFavoriteItem = isFavorite?.includes(_id);
 
 			return (
 				<div className="col-lg-3 col-md-6 col-sm-6 col-12 mb-4 position-relative text-dark">
@@ -99,7 +104,7 @@ const Card: React.FC<CardProps> = ({ results }) => {
                                 className="badge bg-danger fs-5"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    deleteToFavorites(parseInt(_id));
+                                    deleteToFavorites(_id);
                                 }}
                             >
                                 Quitar de Favorito
@@ -112,7 +117,7 @@ const Card: React.FC<CardProps> = ({ results }) => {
                                     addToFavorites(parseInt(_id), image, name, status, location || { name: 'Unknown' });
                                 }}
                             >
-                                Agregar a Favorito
+                                {isFavoriteItem ? 'Quitar de Favorito' : 'Agregar a Favorito'}
                             </button>
                         )}
 					</div>

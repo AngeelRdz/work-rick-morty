@@ -118,7 +118,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         
             try {
                 const res = await verifyTokenRequest(cookies.token);
-                console.log('res:', res.data);
+                console.log('res verifyTokenRequest:', res.data);
 
                 if (!res.data) {
                     setLoading(false);

@@ -18,7 +18,7 @@ interface FavoriteContextProps {
     list: User[];
     createFavorite: (user: User) => Promise<void>;
     getFavorites: () => Promise<void>;
-    deleteFavorite: (id: number) => Promise<void>;
+    deleteFavorite: (id: string) => Promise<void>;
 }
 
 export const FavoriteContext = createContext<FavoriteContextProps>({
@@ -54,7 +54,7 @@ export const FavoriteProvider: React.FC<FavoriteProviderProps> = ({ children }) 
         setLoading(true);
         try {
             const res = await getFavoritesRequest();
-            console.log('res:', res.data);
+            console.log('response de getFavorites:', res.data);
             setList(res.data);
         } catch (error) {
             if (error instanceof AxiosError) {
@@ -80,15 +80,15 @@ export const FavoriteProvider: React.FC<FavoriteProviderProps> = ({ children }) 
         }
     };
 
-    const deleteFavorite = async (id: number) => {
+    const deleteFavorite = async (id: string) => {
         console.log("Delete favorite:", id);
-
+    
         try {
             const res = await deleteFavoritesRequest(id);
             
             if (res.status === 200) {
                 console.log('Entre Favorite deleted');
-                setList(list.filter((list) => list._id !== id));
+                setList(list.filter((list) => list._id !== parseInt(id)));
             }
             
             console.log('ress:', res);
@@ -98,6 +98,11 @@ export const FavoriteProvider: React.FC<FavoriteProviderProps> = ({ children }) 
             }
         }
     };
+
+    // useEffect(() => {
+    //     getFavorites();
+    // }, []);
+
 
     useEffect(() => {
         if (errors && errors.length > 0) {
